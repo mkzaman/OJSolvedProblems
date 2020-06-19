@@ -10,50 +10,81 @@ namespace C._Social_Distance
             while (cases-- > 0)
             {
                 int[] input = Array.ConvertAll(Console.ReadLine().Split(' '), (item) => Convert.ToInt32(item));
-                int[] tables = Array.ConvertAll(Console.ReadLine().ToCharArray(), (item) => Convert.ToInt32(item));
+                int[] tables = Array.ConvertAll(Console.ReadLine().ToCharArray(), c => (int)Char.GetNumericValue(c));
                 int numberOfTables = input[0];
                 int distance = input[1];
 
-                int positionOfLastOne = -1;
-                int positionOfNextOne = -1;
+                int lastOne = -1;
                 int result = 0;
 
-                for (int i = 0; i < numberOfTables;)
+                if(numberOfTables == 1)
                 {
-                    if (tables[i] == 1)
+                    if(tables[0] == 1)
                     {
-                        int temp;
-                        if(i-positionOfLastOne > i)
+                        Console.WriteLine(0);
+                    }
+                    else
+                    {
+                        Console.WriteLine(1);
+                    }
+                    continue;
+                }
+
+
+                int i = 0;
+                for (; i < numberOfTables; i++)
+                {
+                    if (tables[i] == 1 && i > lastOne)
+                    {
+                        if(i == 0)
                         {
-                            temp = i - 0 - distance;
-                            positionOfLastOne = i;
+                            lastOne = 0;
+                            continue;
+                        }
+                        int temp;
+                        if(lastOne != -1)
+                        {
+                            temp = i - lastOne - 1;
+                            temp = temp - 2 * distance;
                         }
                         else
                         {
-                            temp = i - positionOfLastOne - 2 * distance;
-                            positionOfLastOne = i;
+                            if(lastOne == -1)
+                            {
+                                lastOne = 0;
+                            }
+                            temp = i - lastOne;
+                            temp = temp - distance;
                         }
-
+                        
+                        temp = Convert.ToInt32(Math.Ceiling((double)temp / (distance+1)));
                         if(temp > 0)
                         {
-
+                            result += temp;
                         }
-
-                        for (int j = i + 1; j < numberOfTables; j++)
-                        {
-                            if(tables[j] == 1)
-                            {
-                                positionOfNextOne = j;
-                                break;
-                            }
-                        }
-                        if(positionOfNextOne == positionOfLastOne)
-                        {
-
-                        }
+                        lastOne = i;
                     }
-                    i++;
                 }
+                i--;
+
+
+                if(lastOne == -1)
+                {
+                    result += Convert.ToInt32(Math.Ceiling((double)numberOfTables / (distance + 1)));
+                }
+                else
+                {
+                    int t = i - lastOne;
+                    t = t - distance;
+                    t = Convert.ToInt32(Math.Ceiling((double)t / (distance + 1)));
+                    if (t > 0)
+                    {
+                        result += t;
+                    }
+
+                }
+                Console.WriteLine(result);
+
             }
         }
     }
