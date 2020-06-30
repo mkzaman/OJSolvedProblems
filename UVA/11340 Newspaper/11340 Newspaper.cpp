@@ -83,12 +83,7 @@ int main()
 				result_in_cents += value_mapping[char_value];
 			}
 		}
-
-		
-
 		printf("%0.2lf$\n", result_in_cents / 100.0);
-
-
 	}
 	return 0;
 }
