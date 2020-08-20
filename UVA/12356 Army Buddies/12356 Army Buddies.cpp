@@ -21,40 +21,45 @@ int main()
 		}
 		else
 		{
-			vector<int> a(s);
-			iota(a.begin(), a.end(), 1);
+			vector<int>left(s);
+			vector<int>right(s);
+
+			iota(left.begin(), left.end(), 0);
+			iota(right.begin(), right.end(), 2);
+			right[s - 1] = 0;
+
 			for (int x = 0; x < b; x++)
 			{
 				int y, z;
 				scanf("%d %d", &y, &z);
-				vector<int>::iterator it1, it2;
-				it1 = find(a.begin(), a.end(), y);
-				it2 = find(a.begin(), a.end(), z);
 
-				it2++;
-				if (it1 == a.begin())
+				if (left[y - 1] != 0) {
+					right[left[y - 1] - 1] = right[z - 1];
+				}
+				
+				if (right[z - 1] != 0) {
+					left[right[z - 1] - 1] = left[y - 1];
+				}
+
+				if (left[y - 1] == 0)
 				{
 					printf("* ");
 				}
-				else
-				{
-					printf("%d ", *--it1);
-					it1++;
+				else {
+					printf("%d ", left[y - 1]);
 				}
 
-
-				if (it2 == a.end())
+				if (right[z - 1] == 0)
 				{
 					printf("*");
 				}
 				else
 				{
-					printf("%d", *it2);
+					printf("%d", right[z - 1]);
 				}
-
-				a.erase(it1, it2);
 				printf("\n");
 			}
+			
 			printf("-\n");
 		}
 	}
