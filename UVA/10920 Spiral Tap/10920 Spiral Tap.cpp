@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -19,46 +20,35 @@ int main()
 		}
 
 		int center = (border / 2) + 1;
-		
-		int up = 1;
-		int left = 1;
-		int right = 2;
-		int down = 2;
-		
-		int column = center;
-		int line = center;
-		
-		unsigned long long int step = 1;
+
+		double sq = sqrt(number);
+
+		unsigned long long int sqc = ceil(sq);
+		unsigned long long int sqf = floor(sq);
+
+		sqf = sqf % 2 == 1 ? sqf : sqf - 1;
+
+		int line = sqf, column = sqf;
+
+		unsigned long long int steps = sqf * sqf;
+
 		bool found = false;
-		while (1) 
+
+		while (sqf != sqc)
 		{
-			if (number == 1)
-			{
-				break;
-			}
-			for (int i = 0; i < up; i++)
-			{
-				line++;
-				step++;
-				if (step == number)
-				{
-					found = true;
-					break;
-				}
-			}
+			line++;
+			steps++;
 
-			if (found)
+			if (steps == number)
 			{
 				break;
 			}
 
-			up += 2;
-
-			for (int i = 0; i < left; i++)
+			for (int i = 0; i < sqf; i++)
 			{
 				column--;
-				step++;
-				if (step == number)
+				steps++;
+				if (steps == number)
 				{
 					found = true;
 					break;
@@ -70,13 +60,11 @@ int main()
 				break;
 			}
 
-			left += 2;
-
-			for (int i = 0; i < down; i++)
+			for (int i = 0; i <= sqf; i++)
 			{
 				line--;
-				step++;
-				if (step == number)
+				steps++;
+				if (steps == number)
 				{
 					found = true;
 					break;
@@ -88,13 +76,28 @@ int main()
 				break;
 			}
 
-			down += 2;
-
-			for (int i = 0; i < right; i++)
+			for (int i = 0; i <= sqf; i++)
 			{
 				column++;
-				step++;
-				if (step == number)
+				steps++;
+				if (steps == number)
+				{
+					found = true;
+					break;
+				}
+
+			}
+
+			if (found)
+			{
+				break;
+			}
+
+			for (int i = 0; i <= sqf; i++)
+			{
+				column++;
+				steps++;
+				if (steps == number)
 				{
 					found = true;
 					break;
@@ -105,8 +108,6 @@ int main()
 			{
 				break;
 			}
-
-			right += 2;
 		}
 
 		cout << "Line = " << line << ", column = " << column << "." <<"\n";
